@@ -14,9 +14,6 @@ namespace ProcDump
     [DllImport("dbghelp.dll")]
     public static extern bool MiniDumpWriteDump(IntPtr hProcess, int processId, IntPtr hFile, int dumpType, IntPtr expParam, IntPtr userStreamParam, IntPtr callbackParam);
 
-    [DllImport("kernel32.dll")]
-    internal static extern bool IsWow64Process([In] IntPtr process, [Out] out bool wow64Process);
-
     public static class MINIDUMPTYPE
     {
       public const int MiniDumpNormal = 0x00000000;
@@ -75,10 +72,6 @@ namespace ProcDump
 
       foreach (Process p in ProcList)
       {
-        bool isWow64 = false;
-        IntPtr ptr = new IntPtr(p.Id);
-        IsWow64Process(ptr, out isWow64);
-
         if(IntPtr.Size == 4)
         {
           Console.WriteLine("This application should be compiled and run as x64");
